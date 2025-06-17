@@ -1,0 +1,30 @@
+django-cors-headers ==4.3.1
+django-easyaudit-utils ==0.0.6
+django-easy-audit ==1.3.5
+django-versatileimagefield ==3.0
+djangorestframework ==3.14.0
+mysql-connector-python==9.2.0
+django-rest-swagger ==2.2.0
+drf-spectacular ==0.26.5
+twilio ==8.10.2
+pandas ==2.1.3
+django-test== 0.4030
+drf-yasg ==1.21.7
+djangorestframework-api-key == 3.0.0
+python-magic == 0.4.27
+whitenoise== 6.9.0
+mysqlclient == 2.2.7
+geoip2 ==5.0.1
+user-agents == 2.2.0
+rest_framework_swagger==0.3.10
+pillow
+python-dotenv
+django-celery-results
+django-celery-beat
+djangorestframework
+djangorestframework-simplejwt
+google-auth
+pip show python-dotenv
+pip install django-celery-results
+pip install django-celery-beat
+pip install psycopg2-binarypi
