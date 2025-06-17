@@ -172,8 +172,10 @@ USE_I18N = True
 USE_TZ = True
 
 
-# settings.py
-# settings.py
+GOOGLE_OAUTH2_CLIENT_ID = '563635898415-qjjun94a9ef9sm8na1q3bgtialba06qq.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = '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'  # Only needed for server-side flow
+
+
 SOCIAL_AUTH_FACEBOOK_KEY = 'your-facebook-app-id'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'your-facebook-app-secret'
 

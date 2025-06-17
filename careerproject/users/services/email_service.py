@@ -1,7 +1,7 @@
 import requests
 import json
 from django.template.loader import render_to_string
-from email.config import EMAIL_CONFIG
+from ..email.config import EMAIL_CONFIG
 from django.conf import settings
 
 class EmailService:

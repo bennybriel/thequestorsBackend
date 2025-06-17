@@ -32,8 +32,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 import datetime
-from utils.tokens import generate_verification_token
-from email.service import EmailService
+from .utils.tokens import generate_verification_token
+from .services.email_service import EmailService
+
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
@@ -47,6 +48,8 @@ class RegisterView(generics.CreateAPIView):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             user = serializer.save()
+            verification_token = generate_verification_token(user)
+            verification_url = f"https://yourdomain.com/verify-email/{verification_token}/"
             if user : 
                 success, response = EmailService.send_signup_email(user, verification_url)
                 

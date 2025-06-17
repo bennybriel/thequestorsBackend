@@ -8,7 +8,6 @@ from django.contrib.auth import authenticate
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
-from course.email.service import EmailService
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -57,17 +56,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
-        
-         # Generate verification URL
-        verification_token = generate_verification_token(user)
-        verification_url = f"https://yourdomain.com/verify-email/{verification_token}/"
-        
-        # Send signup email
-        success, response = EmailService.send_signup_email(user, verification_url)
-        
-        if not success:
-            # Handle email sending failure
-            print(f"Failed to send signup email: {response}")
     
     # ... rest of registration logic ...
         return user
