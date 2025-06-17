@@ -179,8 +179,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'your-facebook-app-secret'
 
 FACEBOOK_APP_ID = SOCIAL_AUTH_FACEBOOK_KEY
 FACEBOOK_APP_SECRET = SOCIAL_AUTH_FACEBOOK_SECRET
-GOOGLE_OAUTH2_CLIENT_ID = '563635898415-qjjun94a9ef9sm8na1q3bgtialba06qq.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET = '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'  # Only needed for server-side flow
+
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
