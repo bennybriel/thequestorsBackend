@@ -117,6 +117,17 @@ TEMPLATES = [
 ]
 
 
+EMAIL_TEMPLATES = {
+    'SIGNUP': {
+        'subject': 'Welcome to The Questors',
+        'template_name': 'signup_email'
+    },
+    'PASSWORD_RESET': {
+        'subject': 'Password Reset Request',
+        'template_name': 'password_reset_email'
+    }
+}
+
 WSGI_APPLICATION = 'careerproject.wsgi.application'
 
 
@@ -172,8 +183,18 @@ USE_I18N = True
 USE_TZ = True
 
 
+
+QUESTORS_URL ="http://thequestors.com"
+QUESTORS_URL_API ="http://thequestors.com/api/v1/"
+#QUESTORS_URL ="http://localhost:3000"
+#QUESTORS_URL_API="http://localhost:3000/api/v1/"
+
 GOOGLE_OAUTH2_CLIENT_ID = '563635898415-qjjun94a9ef9sm8na1q3bgtialba06qq.apps.googleusercontent.com'
 GOOGLE_OAUTH2_CLIENT_SECRET = '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'  # Only needed for server-side flow
+
+EMAIL_URL    ="https://api.zeptomail.com/v1.1/email"
+EMAIL_SENDER ="noreply@lautech.edu.ng"
+EMAIL_TOKEN  ="Zoho-enczapikey wSsVR61xqxSkCad+yGarcrxtyl4ABA73FU4o2FXy7yD1T//G88c5xhHKDAP2G/dMQzY8FzEQpr18nhtS22BditV7z1oHDiiF9mqRe1U4J3x17qnvhDzOXW1YlReNJYMBwwVsnmBlFcsq+g=="
 
 
 SOCIAL_AUTH_FACEBOOK_KEY = 'your-facebook-app-id'

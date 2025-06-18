@@ -32,8 +32,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 import datetime
-from .utils.tokens import generate_verification_token
 from .services.email_service import EmailService
+import os
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -48,8 +49,8 @@ class RegisterView(generics.CreateAPIView):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             user = serializer.save()
-            verification_token = generate_verification_token(user)
-            verification_url = f"https://yourdomain.com/verify-email/{verification_token}/"
+           
+            verification_url = settings.QUESTORS_URL
             if user : 
                 success, response = EmailService.send_signup_email(user, verification_url)
                 
@@ -84,27 +85,6 @@ class RegisterView(generics.CreateAPIView):
             }
             print(error_data);
             return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
-
-# class LoginView(generics.GenericAPIView):
-#     serializer_class = LoginSerializer
-#     permission_classes = [AllowAny]
-#
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#
-#         try:
-#             serializer.is_valid(raise_exception=True)
-#             user = serializer.validated_data['user']
-#             refresh = RefreshToken.for_user(user)
-#
-#             return Response({
-#                 'user': UserSerializer(user).data,
-#                 'refresh': str(refresh),
-#                 'access': str(refresh.access_token),
-#             })
-#
-#         except ValidationError as e:
-#             return Response(e.detail, status=status.HTTP_401_UNAUTHORIZED)
 
 class LoginView(generics.GenericAPIView):
     permission_classes = (AllowAny,)
@@ -428,3 +408,11 @@ class SocialAuth(APIView):
                 'lastName': user.last_name
             }
         })
+
+def send_verification_email(user):
+    verification_url = f"https://example.com/verify/{user.id}/"
+    success, response = EmailService.send_signup_email(user, verification_url)
+    
+    if not success:
+        print(f"Failed to send email: {response}")
+        # Handle error

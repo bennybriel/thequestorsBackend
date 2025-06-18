@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
-
+import uuid
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True,
@@ -44,6 +44,7 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         #validated_data.pop('password2')
         #validated_data['password'] = make_password(validated_data['password'])  # Explicit hashi
+        uid = uuid.uuid4()
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -52,7 +53,8 @@ class UserSerializer(serializers.ModelSerializer):
             is_mentor=validated_data.get('is_mentor', False),
             mentor_expertise=validated_data.get('mentor_expertise', ''),
             skills=validated_data.get('skills', []),
-            bio=validated_data.get('bio', '')
+            bio=validated_data.get('bio', ''),
+            guid = uid
         )
         user.set_password(validated_data['password'])
         user.save()

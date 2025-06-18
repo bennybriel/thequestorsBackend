@@ -1,43 +1,49 @@
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import urllib.parse
 from django.conf import settings
-import six  # Use the standalone six library instead of Django's
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+import six  # Use the standalone six package
 
-class EmailVerificationTokenGenerator(PasswordResetTokenGenerator):
+class PasswordResetTokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
         """
-        Creates a hash value for the token generation
+        Create hash value for token generation
+        Args:
+            user: User instance
+            timestamp: Current timestamp
+        Returns:
+            str: Hash value string
         """
         return (
             str(user.pk) + str(timestamp) + 
-            str(user.email) +
+            str(user.password) +  # Invalidates when password changes
             str(user.is_active)
         )
 
-email_verification_token = EmailVerificationTokenGenerator()
+# Create token generator instance
+password_reset_token = PasswordResetTokenGenerator()
 
-def generate_verification_token(user):
+def generate_password_reset_token(user):
     """
-    Generates a verification token for the user
+    Generate URL-safe password reset token
     Args:
-        user: User model instance
+        user: User instance
     Returns:
-        URL-safe encoded token string
+        str: URL-encoded token
     """
-    token = email_verification_token.make_token(user)
+    token = password_reset_token.make_token(user)
     return urllib.parse.quote(token)
 
-def verify_verification_token(user, token):
+def verify_password_reset_token(user, token):
     """
-    Verifies the verification token for the user
+    Verify password reset token validity
     Args:
-        user: User model instance
-        token: Token string to verify
+        user: User instance
+        token: Token to verify
     Returns:
-        bool: True if token is valid, False otherwise
+        bool: True if valid, False otherwise
     """
     try:
         decoded_token = urllib.parse.unquote(token)
-        return email_verification_token.check_token(user, decoded_token)
+        return password_reset_token.check_token(user, decoded_token)
     except Exception:
         return False
