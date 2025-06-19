@@ -101,9 +101,12 @@ class LoginView(generics.GenericAPIView):
                 'id': user.id,
                 'username': user.username,
                 'email': user.email,
-                'last_name':user.last_name,
+                'last_name':user.last_name, 
                 'first_name':user.first_name,
-                'is_active': user.is_active
+                'is_active': user.is_active,
+                'is_staff': user.is_staff,
+                'date_joined':user.date_joined
+                
             },
             'expireDate':datetime.datetime.now(),
             'expiresIn': 3600,
@@ -181,7 +184,8 @@ class GoogleLogin(APIView):
                     'email': user.email,
                     'last_name':user.last_name,
                     'first_name':user.first_name,
-                    'is_active': user.is_active
+                    'is_active': user.is_active,
+                    'is_staff': user.is_staff
                 },
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
@@ -285,7 +289,7 @@ class GoogleAuth(APIView):
                     'username': idinfo['email'],
                     'first_name': idinfo.get('given_name', ''),
                     'last_name': idinfo.get('family_name', ''),
-                    'is_active': True
+                    'is_active': True,
                 }
             )
 
@@ -300,7 +304,8 @@ class GoogleAuth(APIView):
                 'email': user.email,
                 'last_name':user.last_name,
                 'first_name':user.first_name,
-                'is_active': user.is_active
+                'is_active': user.is_active,
+                'is_staff':user.is_staff
             },
             'expireDate':datetime.datetime.now(),
             'expiresIn': 3600,

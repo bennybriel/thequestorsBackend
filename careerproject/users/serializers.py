@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'password',
                   'first_name', 'last_name', 'is_mentor',
-                  'mentor_expertise', 'skills', 'bio']
+                  'mentor_expertise', 'skills', 'bio','guid','is_staff','date_joined','is_active']
         extra_kwargs = {
             'last_name': {'required': True},
             'first_name': {'required': True},
@@ -125,3 +125,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['mentor_expertise'] = user.mentor_expertise
 
         return token
+class UserPermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'is_staff', 'is_superuser']
+        read_only_fields = ['id', 'username', 'email']

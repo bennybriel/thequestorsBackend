@@ -8,5 +8,6 @@ class CustomUser(AbstractUser):
     is_mentor = models.BooleanField(default=False)
     mentor_expertise = models.CharField(max_length=255, blank=True)
 
+
     def __str__(self):
         return self.username

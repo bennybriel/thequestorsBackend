@@ -5,10 +5,12 @@ from .views import RegisterView, CustomTokenObtainPairView, LoginView,UserDetail
 from .auth_social.login_facebook import FacebookAuth
 from .controller.reset_password import PasswordResetConfirmView,PasswordResetRequestView
 from .controller.guid import UserGuidUpdateView
+from .controller.users import RegisteredUsersListView,UserPermissionView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='auth-register'),
     path('login/', LoginView.as_view(), name='auth-login'),
+    path('users/', RegisteredUsersListView.as_view(), name='registered-users-list'),
     path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('profile/', UserDetailView.as_view(), name='user-profile'),
@@ -20,4 +22,5 @@ urlpatterns = [
     path('password-reset-confirm/<str:user_id>/<str:token>/', PasswordResetConfirmView.as_view(), name='api-password-reset-confirm'),   
     path('password-reset-confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),   
     path('update-guids/', UserGuidUpdateView.as_view(), name='update-user-guids'),
+    path('users/<str:email>/permissions/', UserPermissionView.as_view(), name='user-permissions'),
 ]
