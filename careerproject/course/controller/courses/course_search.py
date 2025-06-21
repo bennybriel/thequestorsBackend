@@ -205,12 +205,14 @@ class CourseRequirementsView(APIView):
                 'school_id': course.school.id,
                 'school_name': course.school.name,
                 'utme_requirements': [{
+                    'id':req.id,
                     'subject_id': req.subject.id,
                     'subject': req.subject.name,
                     'status': req.get_required_status_display(),
                     'status_code': req.required_status
                 } for req in course.active_utme_reqs],
                 'olevel_requirements': [{
+                    'id':req.id,
                     'subject_id': req.subject.id,
                     'subject': req.subject.name,
                     'status': req.get_required_status_display(),

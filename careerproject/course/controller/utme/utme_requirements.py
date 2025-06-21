@@ -17,5 +17,5 @@ class UTMERequirementRetrieveUpdateDestroyView(BaseRetrieveUpdateDestroyView):
     serializer_class = UTMERequirementSerializer
     
     def put(self, request, *args, **kwargs):
-        # For PUT requests, we'll treat them as PATCH to allow partial updates
+        # For PUT requests, treat them as PATCH to allow partial updates
         return self.partial_update(request, *args, **kwargs)

@@ -12,6 +12,7 @@ from rest_framework.routers import DefaultRouter
 from .viewsets import CourseViewSet
 from .controller.olevels.olevel_requirements import OLevelRequirementViewSet
 from .controller.schools.school_guid import SchoolGuidUpdateView
+from .controller.subjects.subjects import SubjectListCreateView,SubjectRetrieveUpdateDestroyView
 from .controller.utme.utme_requirements import (
     UTMERequirementListCreateView,
     UTMERequirementRetrieveUpdateDestroyView
@@ -54,5 +55,6 @@ urlpatterns = [
     path('schools/', SchoolListCreateView.as_view(), name='school-list-create'),
     path('schools/<uuid:guid>/', SchoolRetrieveUpdateDestroyView.as_view(), name='school-retrieve-update-destroy'),
     path('schools/courses/<uuid:school_guid>/', SchoolCoursesListView.as_view(), name='school-courses-list'),
-   
+    path('subjects/', SubjectListCreateView.as_view(), name='subject-list-create'),
+    path('subjects/<int:pk>/', SubjectRetrieveUpdateDestroyView.as_view(), name='subject-retrieve-update-destroy'),
 ]
