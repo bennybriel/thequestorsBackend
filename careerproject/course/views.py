@@ -3,7 +3,7 @@ from rest_framework import generics, response, status
 from rest_framework.views import APIView
 from django.db.models import Q
 from .models import School, Course, Subject, UTMERequirement, OLevelRequirement
-from .serializers import CourseSerializer, CourseRequirementsSerializer
+from .serializers.courses.serial_courses import CourseSerializer, CourseRequirementsSerializer
 
 class CourseSearchView(generics.ListAPIView):
     permission_classes = []

@@ -2,8 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Course
-from .serializers import CourseSerializer
-from .services.course_services import CourseService
+from .serializers.courses.serial_courses import CourseSerializer
+from .services.courses.course_services import CourseService
 from .permissions import IsCourseActive, IsSchoolActive
 from .filters import CourseFilter
 from django_filters.rest_framework import DjangoFilterBackend

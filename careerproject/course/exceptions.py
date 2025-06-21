@@ -18,3 +18,7 @@ class DuplicateCourseException(CourseAPIException):
 class OLevelRequirementServiceException(Exception):
     """Base exception for OLevelRequirement service layer"""
     pass
+
+class UTMERequirementServiceException(Exception):
+    """Custom exception for UTME Requirement service errors"""
+    pass

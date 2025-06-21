@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from .constants.status import Status
+from django.core.exceptions import ValidationError
 
 class School(models.Model):
     ACTIVE = 'active'
@@ -11,6 +13,7 @@ class School(models.Model):
 
     name = models.CharField(max_length=255)
     website = models.CharField(max_length=255)
+    guid = models.CharField(max_length=255, unique=True)
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
@@ -47,6 +50,7 @@ class Course(models.Model):
     ]
 
     name = models.CharField(max_length=255)
+    guid = models.CharField(max_length=255, unique=True)
     school = models.ForeignKey(
         School,
         on_delete=models.CASCADE,
@@ -71,7 +75,6 @@ class Course(models.Model):
                 violation_error_message="This course already exists in the specified school"
             )
         ]
-
 
 class Subject(models.Model):
     ACTIVE = 'active'

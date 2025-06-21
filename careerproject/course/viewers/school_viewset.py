@@ -1,7 +1,7 @@
 # views/school_viewset.py
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from ..serializers import SchoolSerializer
-from ..services.school_service import SchoolService
+from ..serializers.schools.serial_schools import SchoolSerializer
+from ..services.schools.school_service import SchoolService
 from .base_viewset import BaseViewSet
 
 class SchoolViewSet(BaseViewSet):
