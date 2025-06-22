@@ -140,6 +140,7 @@ class SchoolCourseListSerializer(BaseModelSerializer):
 
     def get_school_info(self, obj):
         return {
+            'id':obj.school.id,
             'name': obj.school.name,
             'guid': obj.school.guid,
             'website': obj.school.website

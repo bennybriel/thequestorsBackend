@@ -191,10 +191,10 @@ class CourseRequirementsView(APIView):
                 status='active'
             ).prefetch_related(
                 Prefetch('utme_requirements',
-                       queryset=UTMERequirement.objects.filter(status='1').select_related('subject'),
+                       queryset=UTMERequirement.objects.filter(status='active').select_related('subject'),
                        to_attr='active_utme_reqs'),
                 Prefetch('olevel_requirements',
-                       queryset=OLevelRequirement.objects.filter(status='1').select_related('subject'),
+                       queryset=OLevelRequirement.objects.filter(status='active').select_related('subject'),
                        to_attr='active_olevel_reqs')
             ).get()
             
@@ -207,14 +207,14 @@ class CourseRequirementsView(APIView):
                 'utme_requirements': [{
                     'id':req.id,
                     'subject_id': req.subject.id,
-                    'subject': req.subject.name,
+                    'subjects': req.subject.name,
                     'status': req.get_required_status_display(),
                     'status_code': req.required_status
                 } for req in course.active_utme_reqs],
                 'olevel_requirements': [{
                     'id':req.id,
                     'subject_id': req.subject.id,
-                    'subject': req.subject.name,
+                    'subjects': req.subject.name,
                     'status': req.get_required_status_display(),
                     'status_code': req.required_status
                 } for req in course.active_olevel_reqs]

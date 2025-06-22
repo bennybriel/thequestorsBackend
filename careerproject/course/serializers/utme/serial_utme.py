@@ -80,63 +80,58 @@ class UTMERequirementCSVUploadSerializer(serializers.Serializer):
 
 
 class UTMERequirementSerializer(serializers.ModelSerializer):
-    schoolname = serializers.CharField(source='school.name', read_only=True)
-    coursename = serializers.CharField(source='course.name', read_only=True)
-    subjectname = serializers.CharField(source='subject.name', read_only=True)
-    schoolID = serializers.IntegerField(source='school.id', read_only=True)
-    courseID = serializers.IntegerField(source='course.id', read_only=True)
-    subjectId = serializers.IntegerField(source='subject.id', read_only=True)
-    
-    # Status fields
-    course_status = serializers.CharField(source='course.status', read_only=True)
-    subject_status = serializers.CharField(source='subject.status', read_only=True)
-    requirement_status = serializers.CharField(source='get_required_status_display', read_only=True)
-    active_status = serializers.CharField(source='get_status_display', read_only=True)
+    # Correct read-only fields (ensure they match your model relationships)
+    school_name = serializers.CharField(source='school.name', read_only=True)
+    course_name = serializers.CharField(source='course.name', read_only=True)
+    subjects = serializers.CharField(source='subject.name', read_only=True)
+    school_id = serializers.IntegerField(source='school.id', read_only=True)
+    course_id = serializers.IntegerField(source='course.id', read_only=True)
+    subject_id = serializers.IntegerField(source='subject.id', read_only=True)
 
     class Meta:
         model = UTMERequirement
         fields = [
-            # Identification fields
-            'id', 
-            
-            # Name fields
-            'schoolname', 'coursename', 'subjectname',
-            
-            # ID fields
-            'schoolID', 'courseID', 'subjectId',
-            
-            # Status fields
-            'required_status', 'requirement_status',
-            'status', 'active_status',
-            'course_status', 'subject_status',
-            
-            # Timestamp
+            'id',
+            # Required fields for creation
+            'school', 'course', 'subject', 'required_status', 'status',
+            # Read-only display fields
+            'school_name', 'course_name', 'subjects',
+            'school_id', 'course_id', 'subject_id',
             'created_at'
         ]
-        read_only_fields = ('created_at', 'requirement_status', 'active_status', 
-                          'course_status', 'subject_status')
         extra_kwargs = {
-            'required_status': {'required': True},  # Make required for both create and update
-            'status': {'required': False}  # Default will be applied if not provided
+            'school': {'write_only': True},
+            'course': {'write_only': True},
+            'subject': {'write_only': True},
+            'required_status': {'required': True},
+            'status': {'required': False, 'default': 'active'}
+
         }
-    
+
     def validate(self, data):
-        # Only check unique constraint during creation
-        if self.instance is None:  # This is a create operation
-            if 'school' in data and 'course' in data and 'subject' in data:
-                if UTMERequirement.objects.filter(
-                    school=data['school'],
-                    course=data['course'],
-                    subject=data['subject']
-                ).exists():
-                    raise serializers.ValidationError("This requirement combination already exists.")
-            
-            # Ensure required_status is provided during creation
-            if 'required_status' not in data:
-                raise serializers.ValidationError({
-                    'required_status': 'This field is required when creating a new requirement.'
-                })
-        
+        """Validate all required relationships exist"""
+        required_relations = ['school', 'course', 'subject']
+        for relation in required_relations:
+            if relation not in data:
+                raise serializers.ValidationError(
+                    {relation: "This field is required"}
+                )
+            if not data[relation].pk:
+                raise serializers.ValidationError(
+                    {relation: "Related object does not exist"}
+                )
         return data
 
-
+    def create(self, validated_data):
+        """Handle creation with proper error messages"""
+        try:
+            return super().create(validated_data)
+        except IntegrityError as e:
+            if 'null value' in str(e):
+                field = str(e).split('"')[1]
+                raise serializers.ValidationError(
+                    {field: "This field cannot be null"}
+                )
+            raise serializers.ValidationError(
+                {"database_error": str(e)}
+            )
