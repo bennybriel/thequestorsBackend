@@ -35,6 +35,7 @@ import datetime
 from .services.email_service import EmailService
 import os
 from django.conf import settings
+import uuid
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -134,74 +135,75 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
-class GoogleLogin(APIView):
-    authentication_classes = []
-    permission_classes = []
+# class GoogleLogin(APIView):
+#     authentication_classes = []
+#     permission_classes = []
 
-    def post(self, request):
-        try:
-            # Get token from request body
-            body = json.loads(request.body.decode('utf-8'))
-            token = body.get('token')
+#     def post(self, request):
+#         try:
+#             # Get token from request body
+#             body = json.loads(request.body.decode('utf-8'))
+#             token = body.get('token')
+#             uid = uuid.uuid4()
+#             if not token:
+#                 return JsonResponse(
+#                     {'error': 'Token is required'},
+#                     status=400
+#                 )
 
-            if not token:
-                return JsonResponse(
-                    {'error': 'Token is required'},
-                    status=400
-                )
+#             # Verify token
+#             idinfo = id_token.verify_oauth2_token(
+#                 token,
+#                 google_requests.Request(),
+#                 settings.GOOGLE_OAUTH2_CLIENT_ID
+#             )
 
-            # Verify token
-            idinfo = id_token.verify_oauth2_token(
-                token,
-                google_requests.Request(),
-                settings.GOOGLE_OAUTH2_CLIENT_ID
-            )
+#             # Validate token
+#             if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+#                 raise ValueError('Invalid issuer')
 
-            # Validate token
-            if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-                raise ValueError('Invalid issuer')
+#             if idinfo['aud'] != settings.GOOGLE_OAUTH2_CLIENT_ID:
+#                 raise ValueError('Invalid audience')
 
-            if idinfo['aud'] != settings.GOOGLE_OAUTH2_CLIENT_ID:
-                raise ValueError('Invalid audience')
+#             # Get or create user
+#             user, created = User.objects.get_or_create(
+#                 email=idinfo['email'],
+#                 defaults={
+#                     'username': idinfo['email'].split('@')[0],
+#                     'first_name': idinfo.get('given_name', ''),
+#                     'last_name': idinfo.get('family_name', ''),
+#                     'guid':uuid
+#                 }
+#             )
 
-            # Get or create user
-            user, created = User.objects.get_or_create(
-                email=idinfo['email'],
-                defaults={
-                    'username': idinfo['email'].split('@')[0],
-                    'first_name': idinfo.get('given_name', ''),
-                    'last_name': idinfo.get('family_name', '')
-                }
-            )
+#             # Generate JWT tokens
+#             refresh = RefreshToken.for_user(user)
 
-            # Generate JWT tokens
-            refresh = RefreshToken.for_user(user)
+#             return Response({
+#                 'user': {
+#                     'id': user.id,
+#                     'username': user.username,
+#                     'email': user.email,
+#                     'last_name':user.last_name,
+#                     'first_name':user.first_name,
+#                     'is_active': user.is_active,
+#                     'is_staff': user.is_staff
+#                 },
+#                 'refresh': str(refresh),
+#                 'access': str(refresh.access_token),
+#                 'message': 'Logged in successfully'
+#             }, status=status.HTTP_200_OK)
 
-            return Response({
-                'user': {
-                    'id': user.id,
-                    'username': user.username,
-                    'email': user.email,
-                    'last_name':user.last_name,
-                    'first_name':user.first_name,
-                    'is_active': user.is_active,
-                    'is_staff': user.is_staff
-                },
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'message': 'Logged in successfully'
-            }, status=status.HTTP_200_OK)
-
-        except ValueError as e:
-            return JsonResponse(
-                {'error': str(e)},
-                status=401
-            )
-        except Exception as e:
-            return JsonResponse(
-                {'error': 'Authentication failed'},
-                status=500
-            )
+#         except ValueError as e:
+#             return JsonResponse(
+#                 {'error': str(e)},
+#                 status=401
+#             )
+#         except Exception as e:
+#             return JsonResponse(
+#                 {'error': 'Authentication failed'},
+#                 status=500
+#             )
 
 class VerifyTokenView(APIView):
     """
@@ -268,7 +270,7 @@ class GoogleAuth(APIView):
         
         if received_client_id and received_client_id != settings.GOOGLE_OAUTH2_CLIENT_ID:
             return Response({'error': 'Invalid client ID'}, status=400)
-        
+        uid = uuid.uuid4()
         try:
             # Verify Google token
             idinfo = id_token.verify_oauth2_token(
@@ -290,6 +292,7 @@ class GoogleAuth(APIView):
                     'first_name': idinfo.get('given_name', ''),
                     'last_name': idinfo.get('family_name', ''),
                     'is_active': True,
+                    'guid': uid
                 }
             )
 

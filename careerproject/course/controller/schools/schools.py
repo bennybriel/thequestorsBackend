@@ -35,9 +35,12 @@ class CourseListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         school_guid = self.request.query_params.get('school_guid')
+        school_id = self.request.query_params.get('school_id')
         status = self.request.query_params.get('status')
         search = self.request.query_params.get('search')
         
+        if school_id:
+                queryset = queryset.filter(school_id=school_id)
         if school_guid:
             queryset = queryset.filter(school__guid=school_guid)
         if status:
@@ -55,7 +58,12 @@ class CourseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class SchoolCoursesListView(generics.ListAPIView):
     serializer_class = SchoolCourseListSerializer
 
+    # def get_queryset(self):
+    #     school_guid = self.kwargs['school_guid']
+    #     school = get_object_or_404(School, guid=school_guid)
+    #     return Course.objects.filter(school=school)
+    
     def get_queryset(self):
-        school_guid = self.kwargs['school_guid']
-        school = get_object_or_404(School, guid=school_guid)
+        school_id = self.kwargs['school_id']
+        school = get_object_or_404(School, id=school_id)
         return Course.objects.filter(school=school)

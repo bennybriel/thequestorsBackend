@@ -209,14 +209,16 @@ class CourseRequirementsView(APIView):
                     'subject_id': req.subject.id,
                     'subjects': req.subject.name,
                     'status': req.get_required_status_display(),
-                    'status_code': req.required_status
+                    'status_code': req.required_status,
+                    'required_status': req.required_status
                 } for req in course.active_utme_reqs],
                 'olevel_requirements': [{
                     'id':req.id,
                     'subject_id': req.subject.id,
                     'subjects': req.subject.name,
                     'status': req.get_required_status_display(),
-                    'status_code': req.required_status
+                    'status_code': req.required_status,
+                    'required_status': req.required_status
                 } for req in course.active_olevel_reqs]
             }
             

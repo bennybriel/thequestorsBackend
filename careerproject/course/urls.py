@@ -55,6 +55,7 @@ urlpatterns = [
     path('schools/', SchoolListCreateView.as_view(), name='school-list-create'),
     path('schools/<uuid:guid>/', SchoolRetrieveUpdateDestroyView.as_view(), name='school-retrieve-update-destroy'),
     path('schools/courses/<uuid:school_guid>/', SchoolCoursesListView.as_view(), name='school-courses-list'),
+    path('schools/courses/<int:school_id>/', SchoolCoursesListView.as_view(), name='school-courses-list'),
     path('subjects/', SubjectListCreateView.as_view(), name='subject-list-create'),
     path('subjects/<int:pk>/', SubjectRetrieveUpdateDestroyView.as_view(), name='subject-retrieve-update-destroy'),
 ]
