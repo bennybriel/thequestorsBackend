@@ -41,7 +41,7 @@ class SearchCoursesView(APIView):
                    to_attr='active_olevel_reqs')
         )
         
-        print(courses)
+        #print(courses)
         results = []
         
         for course in courses:

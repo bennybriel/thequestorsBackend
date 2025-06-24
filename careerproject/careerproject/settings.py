@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     # Local apps
     'users',
     'careers',
+    'feedback',
     'predictions',
     'mentorship',
     'aimodelversion',

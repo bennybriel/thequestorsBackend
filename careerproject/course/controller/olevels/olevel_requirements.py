@@ -12,6 +12,7 @@ class OLevelRequirementViewSet(viewsets.ModelViewSet):
     queryset = OLevelRequirement.objects.all()
     serializer_class = OLevelRequirementSerializer
     #permission_classes = [IsAdminOrReadOnly | IsSchoolAdminOrReadOnly]
+    permission_classes = []
 
     def get_queryset(self):
         filters = {}

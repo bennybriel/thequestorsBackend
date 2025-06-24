@@ -26,7 +26,9 @@ from .controller.schools.schools import (
     SchoolCoursesListView
 )
 
-
+from .controller.courses.course_match import (
+    find_courses_with_requirements
+)
 
 router = DefaultRouter()
 router.register(r'courses', CourseViewSet, basename='course')
@@ -58,4 +60,6 @@ urlpatterns = [
     path('schools/courses/<int:school_id>/', SchoolCoursesListView.as_view(), name='school-courses-list'),
     path('subjects/', SubjectListCreateView.as_view(), name='subject-list-create'),
     path('subjects/<int:pk>/', SubjectRetrieveUpdateDestroyView.as_view(), name='subject-retrieve-update-destroy'),
+    path('matcher/find-exact-matches/', find_courses_with_requirements, name='find-exact-matches'),
+   
 ]
