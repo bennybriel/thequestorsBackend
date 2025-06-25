@@ -50,6 +50,7 @@ class Course(models.Model):
     ]
 
     name = models.CharField(max_length=255)
+    tuition = models.DecimalField(max_digits=10, decimal_places=2)
     guid = models.CharField(max_length=255, unique=True)
     school = models.ForeignKey(
         School,
@@ -76,6 +77,26 @@ class Course(models.Model):
             )
         ]
 
+    def update_field(self, field_name, value, commit=True):
+        if field_name not in [f.name for f in self._meta.get_fields()]:
+            raise ValueError(f"Field '{field_name}' does not exist")
+            
+        if field_name == 'status' and value not in dict(self.STATUS_CHOICES):
+            raise ValueError(f"Invalid status. Choices are: {dict(self.STATUS_CHOICES)}")
+            
+        setattr(self, field_name, value)
+        
+        try:
+            self.full_clean()
+        except ValidationError as e:
+            setattr(self, field_name, getattr(self, field_name))
+            raise e
+            
+        if commit:
+            self.save()
+        return True
+    
+    
 class Subject(models.Model):
     ACTIVE = 'active'
     INACTIVE = 'inactive'

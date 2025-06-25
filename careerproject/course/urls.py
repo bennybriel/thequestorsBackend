@@ -29,6 +29,8 @@ from .controller.schools.schools import (
 from .controller.courses.course_match import (
     find_courses_with_requirements
 )
+from .controller.courses.course_update import CourseTuitionUpdateView
+
 
 router = DefaultRouter()
 router.register(r'courses', CourseViewSet, basename='course')
@@ -42,7 +44,7 @@ urlpatterns = [
     path('courses/', include(router.urls)),
     path('courses/search/', CourseSearchView.as_view(), name='course-search'),
     path('subjects/upload/', SubjectCSVUploadView.as_view(), name='subject-upload'),
-    #path('subjects/', SubjectUploadView.as_view(), name='subject_upload'),
+    path('courses/<int:id>/tuition/', CourseTuitionUpdateView.as_view(), name='course-tuition-update' ),
     path('schools/upload/', SchoolCSVUploadView.as_view(), name='school-upload'),
     path('courses/upload/', CourseCSVUploadView.as_view(), name='course-upload'),
     path('utme-requirements/upload/', UTMERequirementCSVUploadView.as_view(), name='utme-requirement-csv-upload'),

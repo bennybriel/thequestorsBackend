@@ -45,6 +45,7 @@ class CourseSerializer(serializers.ModelSerializer):
                 )
         
         return data
+    
 class CourseListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
