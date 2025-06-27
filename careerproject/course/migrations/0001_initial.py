@@ -44,6 +44,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('tuition',models.DecimalField(max_digits=10, decimal_places=2)),
+                ('tuition_indigene',models.DecimalField(max_digits=10, decimal_places=2)),
                 ('status', models.CharField(choices=[('active', 'Active'), ('inactive', 'Inactive')], default='active', max_length=10)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
                 ('school', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='courses', to='course.school')),

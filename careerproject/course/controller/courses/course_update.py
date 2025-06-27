@@ -13,9 +13,13 @@ class CourseTuitionUpdateView(generics.UpdateAPIView):
 
     def patch(self, request, *args, **kwargs):
         try:
+            print(request.data)
             # Convert input to Decimal if it comes as float
             if 'tuition' in request.data and isinstance(request.data['tuition'], float):
                 request.data['tuition'] = Decimal(str(request.data['tuition']))
+            
+            if 'tuition_indigene' in request.data and isinstance(request.data['tuition_indigene'], float):
+                request.data['tuition_indigene'] = Decimal(str(request.data['tuition_indigene']))
 
             instance = self.get_object()
             serializer = self.get_serializer(instance, data=request.data, partial=True)
@@ -24,13 +28,15 @@ class CourseTuitionUpdateView(generics.UpdateAPIView):
             # Save and return response
             self.perform_update(serializer)
             new_tuition = Decimal(str(serializer.validated_data['tuition']))
+            new_tuition_indigene = Decimal(str(serializer.validated_data['tuition_indigene']))
             
             return Response({
                 'status': 'success',
                 'message': 'Tuition updated successfully',
-                'new_tuition': f"{new_tuition:.2f}",
+                'tuition': f"{new_tuition:.2f}",
                 'previous_tuition': f"{instance.tuition:.2f}",
-                'course_id': instance.id
+                'course_id': instance.id,
+                'tuition_indigene':f"{new_tuition_indigene:.2f}"
             }, status=status.HTTP_200_OK)
 
         except Exception as e:

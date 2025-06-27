@@ -68,6 +68,8 @@ class SearchCoursesView(APIView):
                 'school_name': course.school.name,
                 'school_website': course.school.website,
                 'course_id': course.id,
+                'tuition':course.tuition,
+                'tuition_indigene':course.tuition_indigene,
                 'course_name': course.name,
                 'utme_requirements': utme_requirements,
                 'olevel_requirements': olevel_requirements,

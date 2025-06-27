@@ -136,7 +136,7 @@ class SchoolCourseListSerializer(BaseModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'guid', 'name','tuition', 'status', 'created_at', 'school_info']
+        fields = ['id', 'guid', 'name','tuition','tuition_indigene', 'status', 'created_at', 'school_info']
 
     def get_school_info(self, obj):
         return {

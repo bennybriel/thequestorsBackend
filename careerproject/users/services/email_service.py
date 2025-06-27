@@ -105,6 +105,7 @@ class EmailService:
         
 
         payload = {
+            #"template_key": "2d6f.7712171af2cd96e.k1.daa0eb10-526c-11f0-8c4e-86f7e6aa0425.197ab7d1c41",
             "from": {
                 "address": config['SENDER_EMAIL'],
                 "name": "The Questors"
@@ -117,6 +118,7 @@ class EmailService:
         try:
            
             response = requests.post(config['API_URL'], json=payload, headers=headers)
+            print(response.json())
             if response.status_code == 201:
                 return True, response.json()
             return False, response.json()

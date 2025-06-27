@@ -9,10 +9,16 @@ class CourseTuitionUpdateSerializer(serializers.ModelSerializer):
         required=True,
         help_text="New tuition value (positive decimal number)"
     )
+    tuition_indigene = serializers.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        required=True,
+        help_text="New tuition indigene value (positive decimal number)"
+    )
 
     class Meta:
         model = Course
-        fields = ['tuition']
+        fields = ['tuition','tuition_indigene']
 
     def validate_tuition(self, value):
         """Comprehensive decimal validation"""
@@ -22,7 +28,7 @@ class CourseTuitionUpdateSerializer(serializers.ModelSerializer):
             except:
                 raise serializers.ValidationError("Invalid decimal value")
 
-        if value <= Decimal('0'):
+        if value < Decimal('0'):
             raise serializers.ValidationError("Tuition must be positive")
 
         if value > Decimal('1000000000'):
