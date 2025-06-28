@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from careers.models import Career
+from backend.careerproject.careers.models__ import Career
 
 User = get_user_model()
 

@@ -90,10 +90,11 @@ def find_courses_with_requirements(request):
             results.append({
                 'course_id': course.id,
                 'course_name': course.name,
+                'tuition':course.tuition,
+                'tuition_indigene':course.tuition_indigene,
                 'school_id':course.school.id,
                 'school_name': course.school.name,
-                'school_website': course.school.website
-                ,
+                'school_website': course.school.website,
                 'required_matched': sorted(required_matched, key=lambda x: x['id']),
                 'optional_matched': sorted(optional_matched, key=lambda x: x['id']),
                 'other_required': sorted(other_requirements, key=lambda x: x['id']),

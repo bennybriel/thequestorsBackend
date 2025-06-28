@@ -20,11 +20,7 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include('users.urls')),
-    path('api/v1/careers/', include('careers.urls')),
-    path('api/v1/predictions/', include('predictions.urls')),
-    path('api/v1/mentorship/', include('mentorship.urls')),
-    path('api/v1/ai-models/', include('aimodelversion.urls')),
-    path('api/v1/profile/', include('profiles.urls')),
-    path('api/v1/analytics/', include('analytics.urls')),
     path('api/v1/course/', include('course.urls')),
+    path('api/v1/feedback/', include('feedback.urls')),
+    path('api/v1/career/', include('careers.urls')),
 ]

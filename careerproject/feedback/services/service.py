@@ -1,6 +1,6 @@
-from .models import Feedback
-from .interfaces import IService
-from .exceptions import FeedbackServiceException
+from ..models import Feedback
+from ..interfaces import IService
+from ..exceptions import FeedbackServiceException
 
 class FeedbackService(IService):
     @staticmethod

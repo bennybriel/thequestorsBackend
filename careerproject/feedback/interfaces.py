@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from rest_framework.serializers import Serializer
 
 class ISerializerValidator(ABC):
     @abstractmethod

@@ -1,11 +1,3 @@
-from rest_framework import generics
-from .models import Career
-from .serializers import CareerSerializer
+from django.shortcuts import render
 
-class CareerListView(generics.ListAPIView):
-    queryset = Career.objects.all()
-    serializer_class = CareerSerializer
-
-class CareerDetailView(generics.RetrieveAPIView):
-    queryset = Career.objects.all()
-    serializer_class = CareerSerializer
+# Create your views here.

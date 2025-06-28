@@ -1,5 +1,5 @@
 from .models import Feedback
-from .services import FeedbackService
+from .services.service import FeedbackService
 from .selectors import FeedbackSelector
 from .exceptions import FeedbackNotFoundException
 

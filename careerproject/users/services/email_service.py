@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 class EmailService:
     @staticmethod
-    def send_email(recipient,name,email_type, url, context=None):
+    def send_email(recipient,name,email_type, url,template_key, context=None):
         """
         General email sending method using settings configuration
         """
@@ -23,12 +23,6 @@ class EmailService:
             raise ValueError(f"Unknown email type: {email_type}")
 
         template_config = config['TEMPLATES'][email_type]
-        
-        # Render email content
-        # html_content = render_to_string(
-        #     f"emails/{template_config['template_name']}",
-        #     context or {}
-        # )
         
         headers = {
             "Authorization": config['API_TOKEN'],
@@ -105,7 +99,7 @@ class EmailService:
         
 
         payload = {
-            #"template_key": "2d6f.7712171af2cd96e.k1.daa0eb10-526c-11f0-8c4e-86f7e6aa0425.197ab7d1c41",
+            "template_key":template_key ,
             "from": {
                 "address": config['SENDER_EMAIL'],
                 "name": "The Questors"
@@ -113,8 +107,19 @@ class EmailService:
             "to": [{"email_address": {"address": recipient}}],
             "subject": template_config['subject'],
             "htmlbody":  email_data["htmlbody"],
+            "merge_info": {
+                "name":name,
+                "username": recipient,
+                "verification_code": "123456",
+                "product_name":"The Questors",
+                "login_url_text":url,
+                "verify_account_link":url,
+                "password_reset_link":url,
+                "team":"The Questors"  
+            }
+            
         }
-      
+        #print(payload)
         try:
            
             response = requests.post(config['API_URL'], json=payload, headers=headers)
@@ -123,13 +128,16 @@ class EmailService:
                 return True, response.json()
             return False, response.json()
         except Exception as e:
-            return False, {"error": str(e)}
+             return False, {"error": str(e)}
+
+
 
     @staticmethod
     def send_signup_email(user, verification_url):
         """
         Specific method for sending signup emails
         """
+        config = get_email_config()
         context = {
             'user': user,
             'verification_url': verification_url,
@@ -140,6 +148,7 @@ class EmailService:
             name=user.first_name,
             email_type='SIGNUP', 
             url=verification_url,
+            template_key=config['TEMPLATE_KEY'],
             context=context,
            
         )
@@ -149,6 +158,7 @@ class EmailService:
         """
         Specific method for sending password reset emails
         """
+        config = get_email_config()
         context = {
             'user': user,
             'reset_url': reset_url,
@@ -159,5 +169,7 @@ class EmailService:
             name=user.first_name,
             email_type='PASSWORD_RESET',
             url=reset_url,
+            template_key=config['TEMPLATE_KEY_RESET'],
             context=context
         )
+    

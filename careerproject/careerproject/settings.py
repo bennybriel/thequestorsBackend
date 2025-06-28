@@ -80,11 +80,6 @@ INSTALLED_APPS = [
     'users',
     'careers',
     'feedback',
-    'predictions',
-    'mentorship',
-    'aimodelversion',
-    'profiles',
-    'analytics',
     'course',
 ]
 
@@ -185,8 +180,8 @@ USE_TZ = True
 
 
 
-QUESTORS_URL ="http://thequestors.com"
-QUESTORS_URL_API ="http://thequestors.com/api/v1/"
+QUESTORS_URL ="https://thequestors.com"
+QUESTORS_URL_API ="https://thequestors.com/api/v1/"
 #QUESTORS_URL ="http://localhost:3000"
 #QUESTORS_URL_API="http://localhost:3000/api/v1/"
 
@@ -194,9 +189,11 @@ GOOGLE_OAUTH2_CLIENT_ID = '563635898415-qjjun94a9ef9sm8na1q3bgtialba06qq.apps.go
 GOOGLE_OAUTH2_CLIENT_SECRET = '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'  # Only needed for server-side flow
 
 EMAIL_URL    ="https://api.zeptomail.com/v1.1/email"
+EMAIL_TEMPLATES_URL="https://api.zeptomail.com/v1.1/email/template"
 EMAIL_SENDER ="noreply@lautech.edu.ng"
 EMAIL_TOKEN  ="Zoho-enczapikey wSsVR61xqxSkCad+yGarcrxtyl4ABA73FU4o2FXy7yD1T//G88c5xhHKDAP2G/dMQzY8FzEQpr18nhtS22BditV7z1oHDiiF9mqRe1U4J3x17qnvhDzOXW1YlReNJYMBwwVsnmBlFcsq+g=="
-
+EMAIL_TEMPLATES_KEY="2d6f.7712171af2cd96e.k1.daa0eb10-526c-11f0-8c4e-86f7e6aa0425.197ab7d1c41"
+TEMPLATE_KEY_RESET ="2d6f.7712171af2cd96e.k1.0c773ec0-5400-11f0-9fdd-522b4d8f9316.197b5cf7cac"
 
 SOCIAL_AUTH_FACEBOOK_KEY = '1321201456110086'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'fa68f56bea2c8deb51b1f09469619ea7'

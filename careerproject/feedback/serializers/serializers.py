@@ -1,31 +1,26 @@
 from rest_framework import serializers
 from ..models import Feedback
-from ..interfaces import ISerializerValidator
 
-class FeedbackSerializer(serializers.ModelSerializer, ISerializerValidator):
-    rating_display = serializers.SerializerMethodField(read_only=True)
-    user = serializers.StringRelatedField(read_only=True)
+class FeedbackCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feedback
+        fields = ['rating', 'comment', 'is_public']  # Only include fields that can be set by user
+        extra_kwargs = {
+            'rating': {'required': True},
+            'comment': {'required': False, 'allow_blank': True},
+            'is_public': {'required': False, 'default': True}
+        }
 
     class Meta:
         model = Feedback
         fields = [
-            'id', 'user', 'rating', 'rating_display', 
+            'id', 'user', 'rating', 'rating_display',
             'comment', 'created_at', 'updated_at', 'is_public'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'user']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'user', 'rating_display']
 
     def get_rating_display(self, obj):
+        # Handle case when obj is a dictionary (during create)
+        if isinstance(obj, dict):
+            return dict(Feedback.RATING_CHOICES).get(obj.get('rating'), '')
         return obj.rating_display
-
-    def validate(self, data):
-        """Validate serializer data"""
-        if len(data.get('comment', '')) > 1000:
-            raise serializers.ValidationError("Comment cannot exceed 1000 characters.")
-        return data
-
-class FeedbackCreateSerializer(FeedbackSerializer):
-    """Serializer for creating feedback with additional validation"""
-    def validate_rating(self, value):
-        if value < 1 or value > 5:
-            raise serializers.ValidationError("Rating must be between 1 and 5.")
-        return value
