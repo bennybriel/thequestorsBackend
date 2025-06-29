@@ -27,7 +27,8 @@ urlpatterns = [
     path('university-careers/', UniversityCareerPathListView.as_view(), name='university-career-list'),
     path('university-careers/<int:pk>/', UniversityCareerPathDetailView.as_view(), name='university-career-detail'),
     #search
-    path('search/', CareerSearchView.as_view(), name='career-search'),
+    #path('search/', CareerSearchView.as_view(), name='career-search'),
+    path('search/', CareerSearchView.as_view({'post': 'career_search'}), name='career-search'),
     path('plans/<int:career_id>/', CareerPlanView.as_view(), name='career-plan'),
     path('plans/<int:career_id>/pdf/', CareerPlanPDFView.as_view(), name='career-plan-pdf'),
 ]

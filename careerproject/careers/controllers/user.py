@@ -19,8 +19,6 @@ class UserProfileDetailView(BaseDetailView):
         return UserProfile.objects.filter(user=self.request.user)
 
 
-
-
 class UserProfileListView(BaseListView):
     serializer_class = UserProfileSerializer
     model = UserProfile

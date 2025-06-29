@@ -3,13 +3,13 @@ import django
 from datetime import datetime
 from django.db import transaction
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'careerplanner.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'careerprojectcls.settings')
 django.setup()
 
 from django.contrib.auth.models import User
-from api.models.user import UserProfile
-from api.models.career import CareerPath, ProfessionalQualification
-from api.models.education import EducationPath, University, UniversityCareerPath
+from ..models.user import UserProfile
+from ..models.career import CareerPath, ProfessionalQualification
+from ..models.education import EducationPath, University, UniversityCareerPath
 
 @transaction.atomic
 def populate_data():
